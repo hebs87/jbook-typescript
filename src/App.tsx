@@ -1,9 +1,20 @@
-import React, {FC, ReactElement} from 'react';
+import React, {FC, ReactElement, useState} from 'react';
 
 const App: FC = (): ReactElement => {
+  const [input, setInput] = useState('');
+  const [code, setCode] = useState('');
+
+  const onSubmit = (): void => {
+    console.log(input);
+  }
+
   return (
     <div>
-      <h1>Hi!</h1>
+      <textarea value={input} onChange={e => setInput(e.target.value)}></textarea>
+      <div>
+        <button onClick={onSubmit}>Submit</button>
+      </div>
+      <pre>{code}</pre>
     </div>
   );
 }
