@@ -1,5 +1,6 @@
 import React, {FC, ReactElement, useState, useEffect, useRef} from 'react';
 import * as esbuild from 'esbuild-wasm';
+import {unpkgPathPlugin} from "./plugins/unpkg-path-plugin";
 
 const App: FC = (): ReactElement => {
   const ref = useRef<any>();
@@ -22,11 +23,15 @@ const App: FC = (): ReactElement => {
   const onSubmit = async () => {
     if (!ref.current) return;
 
-    // Transform the input code
-    const result = await ref.current.transform(input, {
-      loader: 'jsx',
-      target: 'es2015'
+    // Transform the input code - intercept it to use npm bundler plugin
+    const result = await ref.current.build({
+      entryPoints: ['index.js'],
+      bundle: true,
+      write: false,
+      plugins: [unpkgPathPlugin()]
     });
+
+    console.log(result);
 
     // Set the result code as the code state to render in the browser
     setCode(result.code);
