@@ -34,7 +34,7 @@ const App: FC = (): ReactElement => {
     console.log(result);
 
     // Set the result code as the code state to render in the browser
-    setCode(result.code);
+    setCode(result.outputFiles[0].text);
   }
 
   return (
