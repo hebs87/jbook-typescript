@@ -19,10 +19,17 @@ const App: FC = (): ReactElement => {
     startService();
   }, []);
 
-  const onSubmit = (): void => {
+  const onSubmit = async () => {
     if (!ref.current) return;
 
-    console.log(ref.current);
+    // Transform the input code
+    const result = await ref.current.transform(input, {
+      loader: 'jsx',
+      target: 'es2015'
+    });
+
+    // Set the result code as the code state to render in the browser
+    setCode(result.code);
   }
 
   return (
