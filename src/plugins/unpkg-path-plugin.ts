@@ -16,8 +16,9 @@ export const unpkgPathPlugin = () => {
 
         if (args.path.includes('./') || args.path.includes('../')) {
           // Append the package to the end of the base URL - it uses the base URL as a relative path
+          // For nested packages, we append the pathname of where the index.js file was found to the base URL
           return {
-            path: new URL(args.path, args.importer + '/').href,
+            path: new URL(args.path, `https://unpkg.com${args.resolveDir}/`).href,
             namespace: 'a'
           }
         }
@@ -26,13 +27,6 @@ export const unpkgPathPlugin = () => {
           path: `https://unpkg.com/${args.path}`,
           namespace: 'a'
         };
-
-        // else if (args.path === 'tiny-test-pkg') {
-        //   return {
-        //     path: 'https://unpkg.com/tiny-test-pkg@1.0.0/index.js',
-        //     namespace: 'a'
-        //   }
-        // }
       });
 
       build.onLoad({ filter: /.*/ }, async (args: any) => {
@@ -42,18 +36,20 @@ export const unpkgPathPlugin = () => {
           return {
             loader: 'jsx',
             contents: `
-              const message = require('medium-test-pkg');
+              const message = require('nested-test-pkg');
               console.log(message);
             `,
           };
         }
 
-        // Get the data from the unpkg package path
-        const {data} = await axios.get(args.path);
-        console.log(data);
+        // Get the data from the unpkg package path, and the request object which has the pathname of where the
+        // index.js file is found - for nested packages - e.g. /src/index.js
+        const {data, request} = await axios.get(args.path);
+        // resolveDir contains the pathname without the /index.js - this is passed on to the next cycle
         return {
           loader: 'jsx',
-          contents: data
+          contents: data,
+          resolveDir: new URL('./', request.responseURL).pathname
         };
       });
     },
