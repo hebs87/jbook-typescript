@@ -13,7 +13,7 @@ const App: FC = (): ReactElement => {
     // Assigns this service build to the ref variable, so we can use it anywhere in our App file
     ref.current = await esbuild.startService({
       worker: true,
-      wasmURL: '/esbuild.wasm'
+      wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm'
     });
   }
 
