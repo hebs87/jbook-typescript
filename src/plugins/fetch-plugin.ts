@@ -30,10 +30,25 @@ export const fetchPlugin = (userInput: string) => {
         // Get the data from the unpkg package path, and the request object which has the pathname of where the
         // index.js file is found - for nested packages - e.g. /src/index.js
         const {data, request} = await axios.get(args.path);
+
+        // Change the fileType depending on whether we are importing jsx or css files and create the contents accordingly
+        const fileType = args.path.match(/.css$/) ? 'css' : 'jsx';
+        // Escape CSS files so the quotes don't interfere with our jsx - new lines, double and single quotes
+        const escaped = data
+          .replace(/\n/g, '')
+          .replace(/"/g, '\\"')
+          .replace(/'/g, "\\'");
+        const contents = fileType === 'css' ?
+          `
+            const style = document.createElement('style');
+            style.innerText = '${escaped}'
+            document.head.appendChild(style);
+          ` : data;
+
         // resolveDir contains the pathname without the /index.js - this is passed on to the next cycle
         const result: esbuild.OnLoadResult = {
           loader: 'jsx',
-          contents: data,
+          contents,
           resolveDir: new URL('./', request.responseURL).pathname
         };
 
