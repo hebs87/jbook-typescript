@@ -49,6 +49,7 @@ const App: FC = (): ReactElement => {
         <button onClick={onSubmit}>Submit</button>
       </div>
       <pre>{code}</pre>
+      <iframe src="/test.html" frameBorder="0"></iframe>
     </div>
   );
 }
