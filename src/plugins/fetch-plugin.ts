@@ -11,6 +11,7 @@ export const fetchPlugin = (userInput: string) => {
   return {
     name: 'fetch-plugin',
     setup(build: esbuild.PluginBuild) {
+      // Handle root entry file of index.js
       build.onLoad({ filter: /^index\.js$/ }, () => {
         return {
           loader: 'jsx',
@@ -18,14 +19,18 @@ export const fetchPlugin = (userInput: string) => {
         };
       });
 
-      build.onLoad({ filter: /.css$/ }, async (args: any) => {
+      // onLoad that holds common logic for below onLoads, but doesn't return a value
+      build.onLoad({ filter: /.*/ }, async (args: any) => {
         // Check if we've already fetched the package
         const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
         // If so, return it from the cache
         if (cachedResult) {
           return cachedResult;
         }
+      });
 
+      // Handle CSS files
+      build.onLoad({ filter: /.css$/ }, async (args: any) => {
         // If not, let the request occur and cache the returned object
         // Get the data from the unpkg package path, and the request object which has the pathname of where the
         // index.js file is found - for nested packages - e.g. /src/index.js
@@ -55,14 +60,8 @@ export const fetchPlugin = (userInput: string) => {
         return result;
       });
 
+      // Handle all other files (JSX)
       build.onLoad({ filter: /.*/ }, async (args: any) => {
-        // Check if we've already fetched the package
-        const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
-        // If so, return it from the cache
-        if (cachedResult) {
-          return cachedResult;
-        }
-
         // If not, let the request occur and cache the returned object
         // Get the data from the unpkg package path, and the request object which has the pathname of where the
         // index.js file is found - for nested packages - e.g. /src/index.js
