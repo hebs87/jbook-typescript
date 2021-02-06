@@ -5,6 +5,7 @@ import {fetchPlugin} from "./plugins/fetch-plugin";
 
 const App: FC = (): ReactElement => {
   const ref = useRef<any>();
+  const iframe = useRef<any>();
   const [input, setInput] = useState('');
   const [code, setCode] = useState('');
 
@@ -38,15 +39,24 @@ const App: FC = (): ReactElement => {
 
     console.log(result);
 
-    // Set the result code as the code state to render in the browser
-    setCode(result.outputFiles[0].text);
+    // Set the result code as the code state to render in the iframe
+    iframe.current.contentWindow.postMessage(result.outputFiles[0].text, '*');
   }
 
-  // Script tag containing JSX code to pass into iFrame via srcDoc attribute
+  // HTML to render in iframe
   const html = `
-    <script>
-      ${code}
-    </script>
+    <html>
+      <head></head>
+      <body>
+        <div id="root"></div>
+        <script >
+          window.addEventListener('message', (event) => {
+            // Transpile the data to render in the iframe
+            eval(event.data);
+          }, false);
+        </script>
+      </body>
+    </html>
   `;
 
   return (
@@ -56,7 +66,7 @@ const App: FC = (): ReactElement => {
         <button onClick={onSubmit}>Submit</button>
       </div>
       <pre>{code}</pre>
-      <iframe sandbox="allow-scripts" srcDoc={html} frameBorder="0"></iframe>
+      <iframe ref={iframe} sandbox="allow-scripts" srcDoc={html} frameBorder="0"></iframe>
     </div>
   );
 }
