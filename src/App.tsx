@@ -7,7 +7,6 @@ const App: FC = (): ReactElement => {
   const ref = useRef<any>();
   const iframe = useRef<any>();
   const [input, setInput] = useState('');
-  const [code, setCode] = useState('');
 
   // Initialise esbuild
   const startService = async () => {
@@ -24,6 +23,9 @@ const App: FC = (): ReactElement => {
 
   const onSubmit = async () => {
     if (!ref.current) return;
+
+    // Reset iframe content to remove and changes from previous execution
+    iframe.current.srcdoc = html;
 
     // Transform the input code - intercept it to use npm bundler plugin
     const result = await ref.current.build({
@@ -45,8 +47,10 @@ const App: FC = (): ReactElement => {
 
   // HTML to render in iframe
   const html = `
-    <html>
-      <head></head>
+    <html lang="en">
+      <head>
+        <title>Preview</title>
+      </head>
       <body>
         <div id="root"></div>
         <script >
@@ -67,12 +71,19 @@ const App: FC = (): ReactElement => {
 
   return (
     <div>
-      <textarea value={input} onChange={e => setInput(e.target.value)}></textarea>
+      <textarea value={input} onChange={e => setInput(e.target.value)}>
+      </textarea>
       <div>
         <button onClick={onSubmit}>Submit</button>
       </div>
-      <pre>{code}</pre>
-      <iframe ref={iframe} sandbox="allow-scripts" srcDoc={html} frameBorder="0"></iframe>
+      <iframe
+        title="preview"
+        ref={iframe}
+        sandbox="allow-scripts"
+        srcDoc={html}
+        frameBorder="0"
+      >
+      </iframe>
     </div>
   );
 }
