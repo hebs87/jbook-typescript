@@ -42,6 +42,13 @@ const App: FC = (): ReactElement => {
     setCode(result.outputFiles[0].text);
   }
 
+  // Script tag containing JSX code to pass into iFrame via srcDoc attribute
+  const html = `
+    <script>
+      ${code}
+    </script>
+  `;
+
   return (
     <div>
       <textarea value={input} onChange={e => setInput(e.target.value)}></textarea>
@@ -49,7 +56,7 @@ const App: FC = (): ReactElement => {
         <button onClick={onSubmit}>Submit</button>
       </div>
       <pre>{code}</pre>
-      <iframe sandbox="" src="/test.html" frameBorder="0"></iframe>
+      <iframe sandbox="allow-scripts" srcDoc={html} frameBorder="0"></iframe>
     </div>
   );
 }
