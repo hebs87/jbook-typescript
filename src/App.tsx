@@ -74,6 +74,7 @@ const App: FC = (): ReactElement => {
     <div>
       <CodeEditor
         initialValue={`// Enter your code below this line`}
+        onChange={(value) => setInput(value)}
       />
       <textarea value={input} onChange={e => setInput(e.target.value)}>
       </textarea>
