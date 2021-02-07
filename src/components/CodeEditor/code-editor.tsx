@@ -28,14 +28,14 @@ const CodeEditor: FC<CodeEditorProps> = ({onChange, initialValue}): ReactElement
     // Get current unformatted value from the editor
     const unformatted = editorRef.current.getModel().getValue();
 
-    // Format the value
+    // Format the value and remove the new line at the end of the file
     const formatted = prettier.format(unformatted, {
       parser: 'babel',
       plugins: [parser],
       useTabs: false,
       semi: true,
       singleQuote: true
-    });
+    }).replace(/\n$/, '');
 
     // Set the formatted value back in the editor
     editorRef.current.setValue(formatted);
