@@ -35,8 +35,10 @@ const Preview: FC<PreviewProps> = ({code}): ReactElement => {
   useEffect(() => {
     // Reset iframe content to remove and changes from previous execution
     iframe.current.srcdoc = html;
-    // Set the result code as the code state to render in the iframe
-    iframe.current.contentWindow.postMessage(code, '*');
+    // Set the result code as the code state to render in the iframe - seTimeout to prevent early execution
+    setTimeout(() => {
+      iframe.current.contentWindow.postMessage(code, '*');
+    }, 50);
   }, [code])
 
   return (
