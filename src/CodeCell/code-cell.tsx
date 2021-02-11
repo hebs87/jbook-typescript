@@ -19,10 +19,12 @@ const CodeCell: FC = (): ReactElement => {
   return (
     <Resizable direction={'vertical'}>
       <div className="window-container">
-        <CodeEditor
-          initialValue={`// Enter your code below this line`}
-          onChange={(value) => setInput(value)}
-        />
+        <Resizable direction={'horizontal'}>
+          <CodeEditor
+            initialValue={`// Enter your code below this line`}
+            onChange={(value) => setInput(value)}
+          />
+        </Resizable>
         <Preview code={code}/>
       </div>
     </Resizable>
