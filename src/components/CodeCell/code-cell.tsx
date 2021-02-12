@@ -1,8 +1,8 @@
 import React, {FC, ReactElement, useState, useEffect} from 'react';
-import CodeEditor from "../components/CodeEditor/code-editor";
-import Preview from "../components/Preview/preview";
-import bundle from '../Bundler/index';
-import Resizable from "../components/Resizable/resizable";
+import CodeEditor from "../CodeEditor/code-editor";
+import Preview from "../Preview/preview";
+import bundle from '../../Bundler';
+import Resizable from "../Resizable/resizable";
 import "./code-cell.styles.scss";
 
 const CodeCell: FC = (): ReactElement => {

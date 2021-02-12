@@ -1,5 +1,5 @@
 import React, {FC, ReactElement} from 'react';
-import CodeCell from "./CodeCell/code-cell";
+import CodeCell from "./components/CodeCell/code-cell";
 
 const App: FC = (): ReactElement => {
   return (
