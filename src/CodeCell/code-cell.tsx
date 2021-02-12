@@ -7,6 +7,7 @@ import "./code-cell.styles.scss";
 
 const CodeCell: FC = (): ReactElement => {
   const [code, setCode] = useState('');
+  const [error, setError] = useState('');
   const [input, setInput] = useState('');
 
   useEffect(() => {
@@ -15,7 +16,8 @@ const CodeCell: FC = (): ReactElement => {
       // Run the bundler and get the output
       const output = await bundle(input);
       // Set the result code as the code state to render in the iframe
-      setCode(output);
+      setCode(output.code);
+      setError(output.error);
     }, 1000);
 
     return () => {
@@ -32,7 +34,7 @@ const CodeCell: FC = (): ReactElement => {
             onChange={(value) => setInput(value)}
           />
         </Resizable>
-        <Preview code={code}/>
+        <Preview code={code} error={error}/>
       </div>
     </Resizable>
   );
