@@ -4,6 +4,7 @@ import './text-editor.styles.scss';
 
 const TextEditor: FC = ():ReactElement => {
   const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState('# Header');
   const mdEditorDiv = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -26,18 +27,29 @@ const TextEditor: FC = ():ReactElement => {
     setEditing(value);
   }
 
+  const handleEditorChange = (value: string): void => {
+    setValue(value);
+  }
+
   return(
     <Fragment>
       {
         editing &&
         <div className="text-editor" ref={mdEditorDiv}>
-          <MDEditor/>
+          <MDEditor
+            value={value}
+            onChange={(value) => handleEditorChange(value || '')}
+          />
         </div>
       }
       {
         !editing &&
-        <div className="text-editor" onClick={() => handleClick(true)}>
-          <MDEditor.Markdown source="# Heading"/>
+        <div className="text-editor card" onClick={() => handleClick(true)}>
+          <div className="card-content">
+            <MDEditor.Markdown
+              source={value}
+            />
+          </div>
         </div>
       }
     </Fragment>
