@@ -30,13 +30,13 @@ const TextEditor: FC = ():ReactElement => {
     <Fragment>
       {
         editing &&
-        <div ref={mdEditorDiv}>
+        <div className="text-editor" ref={mdEditorDiv}>
           <MDEditor/>
         </div>
       }
       {
         !editing &&
-        <div onClick={() => handleClick(true)}>
+        <div className="text-editor" onClick={() => handleClick(true)}>
           <MDEditor.Markdown source="# Heading"/>
         </div>
       }
