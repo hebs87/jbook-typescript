@@ -40,7 +40,24 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
       return;
 
     case ActionType.INSERT_CELL_BEFORE:
-      return state;
+      const {type} = action.payload;
+      // Create new cell object
+      const cell: Cell = {
+        id: randomId(),
+        type,
+        content: ''
+      };
+      // Add new cell object to data object
+      state.data[cell.id] = cell;
+      // Find the index of the id matching the payload id
+      const foundIndex = state.order.findIndex((id) => id === action.payload.id);
+      // Add cell to end of order array if id is null, or add it before the matching id index
+      if (foundIndex < 0) {
+        state.order.push(cell.id);
+      } else {
+        state.order.splice(foundIndex, 0, cell.id);
+      }
+      return;
 
     case ActionType.UPDATE_CELL:
       const {id, content} = action.payload;
@@ -58,5 +75,10 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
       return state;
   }
 });
+
+// Generate random alphanumeric id
+const randomId = (): string => {
+  return Math.random().toString(36).substr(2, 5);
+};
 
 export default cellsReducer;
