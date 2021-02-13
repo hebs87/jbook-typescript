@@ -37,7 +37,7 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
       // Complete swapping logic
       state.order[index] = state.order[targetIndex];
       state.order[targetIndex] = action.payload.id;
-      return;
+      return state;
 
     case ActionType.INSERT_CELL_BEFORE:
       const {type} = action.payload;
@@ -57,19 +57,19 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
       } else {
         state.order.splice(foundIndex, 0, cell.id);
       }
-      return;
+      return state;
 
     case ActionType.UPDATE_CELL:
       const {id, content} = action.payload;
       // Update the content of the cell at the matching id key
       state.data[id].content = content;
-      return;
+      return state;
 
     case ActionType.DELETE_CELL:
       // Delete cell at the matching id key and remove id from order array
       delete state.data[action.payload];
       state.order = state.order.filter(id => id !== action.payload);
-      return;
+      return state;
 
     default:
       return state;
