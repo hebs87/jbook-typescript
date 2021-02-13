@@ -1,12 +1,10 @@
 import React, {FC, ReactElement} from 'react';
-import CodeCell from "./components/CodeCell/code-cell";
-import TextEditor from "./components/TextEditor/text-editor";
+import CellList from "./components/CellList/cell-list";
 
 const App: FC = (): ReactElement => {
   return (
     <div>
-      {/*<CodeCell/>*/}
-      <TextEditor/>
+      <CellList/>
     </div>
   );
 }
