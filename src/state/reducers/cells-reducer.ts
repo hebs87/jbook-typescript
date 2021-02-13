@@ -27,7 +27,18 @@ const cellsReducer = (state: CellsState = initialState, action: Action): CellsSt
       return state;
 
     case ActionType.UPDATE_CELL:
-      return state;
+      const {id, content} = action.payload;
+      // The cell key in the data object is the id - we get the id key, spread in the current props and update content
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [id]: {
+            ...state.data[id],
+            content
+          }
+        }
+      };
 
     case ActionType.DELETE_CELL:
       return state;
