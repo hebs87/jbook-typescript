@@ -25,7 +25,19 @@ const initialState: CellsState = {
 const cellsReducer = produce((state: CellsState = initialState, action: Action) => {
   switch (action.type) {
     case ActionType.MOVE_CELL:
-      return state;
+      const {direction} = action.payload;
+      // Find the index of the id matching the payload id
+      const index = state.order.findIndex((id) => id === action.payload.id);
+      // Set target index - reduce index if direction is up, or increase if direction is down
+      const targetIndex = direction === 'up' ? index - 1 : index + 1;
+      // Check the new index is not outside the bounds of the array - not the first/last element, depending on direction
+      if (targetIndex < 0 || targetIndex > state.order.length - 1) {
+        return;
+      }
+      // Complete swapping logic
+      state.order[index] = state.order[targetIndex];
+      state.order[targetIndex] = action.payload.id;
+      return;
 
     case ActionType.INSERT_CELL_BEFORE:
       return state;
