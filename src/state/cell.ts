@@ -1,3 +1,5 @@
+export type MoveCellDirectionTypes = 'up' | 'down';
+
 export type CellTypes = 'code' | 'text';
 
 export interface Cell {
