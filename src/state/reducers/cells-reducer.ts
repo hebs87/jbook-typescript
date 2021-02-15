@@ -32,7 +32,7 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
       const targetIndex = direction === 'up' ? index - 1 : index + 1;
       // Check the new index is not outside the bounds of the array - not the first/last element, depending on direction
       if (targetIndex < 0 || targetIndex > state.order.length - 1) {
-        return;
+        return state;
       }
       // Complete swapping logic
       state.order[index] = state.order[targetIndex];
