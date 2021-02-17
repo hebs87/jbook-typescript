@@ -6,7 +6,7 @@ interface BundlesState {
   [key: string]: {
     loading: boolean;
     code: string;
-    err: string;
+    error: string;
   };
 }
 
@@ -19,16 +19,16 @@ const bundlesReducer = produce((state: BundlesState = initialState, action: Acti
       state[action.payload.cellId] = {
         loading: true,
         code: '',
-        err: ''
+        error: ''
       };
       return state;
     case ActionType.BUNDLE_COMPLETE:
-      const {code, err} = action.payload.bundle;
+      const {code, error} = action.payload.bundle;
       // Find the cell if it exists, set loading to false and set it props to the response data
       state[action.payload.cellId] = {
         loading: true,
         code,
-        err
+        error
       };
       return state;
     default:
