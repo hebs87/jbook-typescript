@@ -16,6 +16,11 @@ const CodeCell: FC<CodeCellProps> = ({cell}): ReactElement => {
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
 
   useEffect(() => {
+    // Run the bundler immediately when we first start the app and return
+    if (!bundle) {
+      createBundle(cell.id, cell.content);
+      return;
+    }
     // Debounce logic to only read input after user stops typing for 1 second
     const timer = setTimeout(async () => {
       // Call the createBundle action
@@ -25,6 +30,7 @@ const CodeCell: FC<CodeCellProps> = ({cell}): ReactElement => {
     return () => {
       clearTimeout(timer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.id, cell.content, createBundle]);
 
   return (
