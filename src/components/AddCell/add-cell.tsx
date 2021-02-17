@@ -4,24 +4,24 @@ import {useActions} from "../../hooks/use-actions";
 import './add-cell.styles.scss';
 
 interface AddCellProps {
-  nextCellId: string | null;
+  previousCellId: string | null;
   forceVisible?: boolean;
 }
 
-const AddCell: FC<AddCellProps> = ({nextCellId, forceVisible}): ReactElement => {
-  const {insertCellBefore} = useActions();
+const AddCell: FC<AddCellProps> = ({previousCellId, forceVisible}): ReactElement => {
+  const {insertCellAfter} = useActions();
 
   const AddButtons: AddButtonProps[] = [
     {
       btnClassName: "button is-rounded is-primary is-small",
-      onClick: () => insertCellBefore(nextCellId, 'code'),
+      onClick: () => insertCellAfter(previousCellId, 'code'),
       iconClassName: "icon is-small",
       iconName: "fas fa-plus",
       btnText: "Code"
     },
     {
       btnClassName: "button is-rounded is-primary is-small",
-      onClick: () => insertCellBefore(nextCellId, 'text'),
+      onClick: () => insertCellAfter(previousCellId, 'text'),
       iconClassName: "icon is-small",
       iconName: "fas fa-plus",
       btnText: "Text"

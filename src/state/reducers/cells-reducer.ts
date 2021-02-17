@@ -39,7 +39,7 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
       state.order[targetIndex] = action.payload.id;
       return state;
 
-    case ActionType.INSERT_CELL_BEFORE:
+    case ActionType.INSERT_CELL_AFTER:
       const {type} = action.payload;
       // Create new cell object
       const cell: Cell = {
@@ -51,11 +51,11 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
       state.data[cell.id] = cell;
       // Find the index of the id matching the payload id
       const foundIndex = state.order.findIndex((id) => id === action.payload.id);
-      // Add cell to end of order array if id is null, or add it before the matching id index
+      // Add cell to start of order array if id is null, or add it after the matching id index
       if (foundIndex < 0) {
-        state.order.push(cell.id);
+        state.order.unshift(cell.id);
       } else {
-        state.order.splice(foundIndex, 0, cell.id);
+        state.order.splice(foundIndex + 1, 0, cell.id);
       }
       return state;
 
