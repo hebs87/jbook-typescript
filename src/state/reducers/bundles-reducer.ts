@@ -26,7 +26,7 @@ const bundlesReducer = produce((state: BundlesState = initialState, action: Acti
       const {code, error} = action.payload.bundle;
       // Find the cell if it exists, set loading to false and set it props to the response data
       state[action.payload.cellId] = {
-        loading: true,
+        loading: false,
         code,
         error
       };
