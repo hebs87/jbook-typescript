@@ -3,4 +3,6 @@ export enum ActionType {
   INSERT_CELL_AFTER,
   UPDATE_CELL,
   DELETE_CELL,
+  BUNDLE_START,
+  BUNDLE_COMPLETE,
 }
