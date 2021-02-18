@@ -14,24 +14,34 @@ interface CodeCellProps {
 const CodeCell: FC<CodeCellProps> = ({cell}): ReactElement => {
   const {updateCell, createBundle} = useActions();
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
+  const cumulativeCode = useTypedSelector(({cells: {data, order}}) => {
+    // Get code from all code cells in the data, in the order that they are in and join them in an array
+    const orderedCells = order.map(id => data[id]);
+    const cumulativeCode = [];
+    for (let c of orderedCells) {
+      if (c.type === 'code') cumulativeCode.push(c.content);
+      if (c.id === cell.id) break;
+    }
+    return cumulativeCode;
+  });
 
   useEffect(() => {
     // Run the bundler immediately when we first start the app and return
     if (!bundle) {
-      createBundle(cell.id, cell.content);
+      createBundle(cell.id, cumulativeCode.join('\n'));
       return;
     }
     // Debounce logic to only read input after user stops typing for 1 second
     const timer = setTimeout(async () => {
       // Call the createBundle action
-      createBundle(cell.id, cell.content);
+      createBundle(cell.id, cumulativeCode.join('\n'));
     }, 750);
 
     return () => {
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cell.id, cell.content, createBundle]);
+  }, [cumulativeCode.join('\n'), cell.content, createBundle]);
 
   return (
     <Resizable direction={'vertical'}>
