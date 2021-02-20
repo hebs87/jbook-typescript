@@ -1,7 +1,8 @@
+import axios from "axios";
 import {Dispatch} from "redux";
 import {ActionType} from "../action-types";
 import {Action, DeleteCellAction, InsertCellAfterAction, MoveCellAction, UpdateCellAction} from "../actions";
-import {CellTypes, MoveCellDirectionTypes} from "../cell";
+import {Cell, CellTypes, MoveCellDirectionTypes} from "../cell";
 import bundle from "../../Bundler";
 
 export const moveCell = (id: string, direction: MoveCellDirectionTypes): MoveCellAction => ({
@@ -53,5 +54,32 @@ export const createBundle = (cellId: string, input: string) => {
         bundle: result,
       },
     });
+  }
+};
+
+export const fetchCells = () => {
+  return async (dispatch: Dispatch<Action>) => {
+    // Dispatch FETCH_CELLS action
+    dispatch({
+      type: ActionType.FETCH_CELLS,
+    });
+
+    try {
+      // Make network request
+      const {data}: {data: Cell[]} = await axios.get('/cells');
+
+      // Dispatch FETCH_CELLS_COMPLETE action
+      dispatch({
+        type: ActionType.FETCH_CELLS_COMPLETE,
+        payload: data,
+      });
+
+    } catch (error) {
+      // Dispatch FETCH_CELLS_ERROR action
+      dispatch({
+        type: ActionType.FETCH_CELLS_ERROR,
+        payload: error.message,
+      });
+    }
   }
 };
