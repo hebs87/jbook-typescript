@@ -43,6 +43,7 @@ exports.serveCommand = void 0;
 var path_1 = __importDefault(require("path"));
 var commander_1 = require("commander");
 var local_api_1 = require("local-api");
+var isProduction = process.env.NODE_ENV === 'production';
 // square brackets indicate optional values; angle brackets indicate required values
 exports.serveCommand = new commander_1.Command()
     .command('serve [filename]')
@@ -58,7 +59,7 @@ exports.serveCommand = new commander_1.Command()
                 case 0:
                     _b.trys.push([0, 2, , 3]);
                     dir = path_1.default.join(process.cwd(), path_1.default.dirname(filename));
-                    return [4 /*yield*/, local_api_1.serve(parseInt(port), path_1.default.basename(filename), dir)];
+                    return [4 /*yield*/, local_api_1.serve(parseInt(port), path_1.default.basename(filename), dir, !isProduction)];
                 case 1:
                     _b.sent();
                     console.log("Opened " + filename + ". Navigate to http://localhost:" + port + " to edit the file");

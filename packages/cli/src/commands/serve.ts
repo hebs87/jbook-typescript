@@ -2,6 +2,8 @@ import path from "path";
 import {Command} from "commander";
 import {serve} from "local-api";
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 // square brackets indicate optional values; angle brackets indicate required values
 export const serveCommand = new Command()
   .command('serve [filename]')
@@ -10,7 +12,7 @@ export const serveCommand = new Command()
   .action(async (filename = 'notebook.js', {port}: {port: string}) => {
     try {
       const dir = path.join(process.cwd(), path.dirname(filename));
-      await serve(parseInt(port), path.basename(filename), dir);
+      await serve(parseInt(port), path.basename(filename), dir, !isProduction);
       console.log(`Opened ${filename}. Navigate to http://localhost:${port} to edit the file`);
     } catch (error) {
       if (error.code === 'EADDRINUSE') {
