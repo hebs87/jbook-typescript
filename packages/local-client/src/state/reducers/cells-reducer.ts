@@ -40,7 +40,7 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
       // Set the order state - map over the array of cell objects and return the cell id
       state.order = action.payload.map(cell => cell.id);
       // Parse payload data to create the state data object
-      action.payload.reduce((acc, cell) => {
+      state.data = action.payload.reduce((acc, cell) => {
         acc[cell.id] = cell;
         return acc;
       }, {} as CellsState['data']);

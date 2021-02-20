@@ -9,7 +9,7 @@ const CellList: FC = (): ReactElement => {
   const cells = useTypedSelector(({cells: {data, order}}) => (
     order.map((id) => data[id])
   ));
-  const {fetchCells, saveCells} = useActions();
+  const {fetchCells} = useActions();
 
   useEffect(() => {
     fetchCells();
