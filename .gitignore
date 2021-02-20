@@ -1,44 +1,6 @@
 # root
 .idea
 node_modules
-
-# cli
-packages/cli/dist
-packages/cli/node_modules
-packages/cli/package-lock.json
-
-# local-api
-packages/local-api/dist
-packages/local-api/node_modules
-packages/local-api/package-lock.json
-
-# local-client
-# dependencies
-packages/local-client/node_modules
-packages/local-client/.pnp
-packages/local-client/.pnp.js
-
-# testing
-packages/local-client/coverage
-
-# production
-packages/local-client/build
-
-# misc
-packages/local-client/.DS_Store
-packages/local-client/.env.local
-packages/local-client/.env.development.local
-packages/local-client/.env.test.local
-packages/local-client/.env.production.local
-
-packages/local-client/npm-debug.log*
-packages/local-client/yarn-debug.log*
-packages/local-client/yarn-error.log*
-
-packages/local-client/.eslintcache
-
-packages/local-client/yarn.lock
-packages/local-client/yarn-error.log
-
-# Jetbrains IDE
-packages/local-client/.idea
+dist
+build
+yarn.lock
