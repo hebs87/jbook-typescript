@@ -1,6 +1,7 @@
 import express from "express";
 import {createProxyMiddleware} from "http-proxy-middleware";
 import path from "path";
+import {createCellsRouter} from "./routes/cells";
 
 // Args - port to run on, filename of the save/fetch file, dir to save the file into, useProxy to determine which serve
 // method to use depending on environment
@@ -19,6 +20,9 @@ export const serve = (port: number, filename: string, dir: string, useProxy: boo
     const packagePath = require.resolve('local-client/build/index.html');
     app.use(express.static(path.dirname(packagePath)));
   }
+
+  // Call the createCellsRouter
+  app.use(createCellsRouter(filename, dir));
 
   // Resolve promise if successful, or reject and put into error state on error
   return new Promise<void>((resolve, reject) => {
