@@ -3,10 +3,12 @@
 node_modules
 
 # cli
+packages/cli/dist
 packages/cli/node_modules
 packages/cli/package-lock.json
 
 # local-api
+packages/local-api/dist
 packages/local-api/node_modules
 packages/local-api/package-lock.json
 
