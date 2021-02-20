@@ -4,6 +4,7 @@ import {ActionType} from "../action-types";
 import {Action, DeleteCellAction, InsertCellAfterAction, MoveCellAction, UpdateCellAction} from "../actions";
 import {Cell, CellTypes, MoveCellDirectionTypes} from "../cell";
 import bundle from "../../Bundler";
+import {RootState} from "../reducers";
 
 export const moveCell = (id: string, direction: MoveCellDirectionTypes): MoveCellAction => ({
   type: ActionType.MOVE_CELL,
@@ -54,7 +55,7 @@ export const createBundle = (cellId: string, input: string) => {
         bundle: result,
       },
     });
-  }
+  };
 };
 
 export const fetchCells = () => {
@@ -81,5 +82,24 @@ export const fetchCells = () => {
         payload: error.message,
       });
     }
-  }
+  };
+};
+
+export const saveCells = () => {
+  // getState function allows us to reach into state and get data from it
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const {cells: {data, order}} = getState();
+    // Create array of Cell objects
+    const cells = order.map(id => data[id]);
+    try {
+      // Post to API
+      await axios.post('/cells', {cells});
+    } catch (error) {
+      // Dispatch SAVE_CELLS_ERROR action
+      dispatch({
+        type: ActionType.SAVE_CELLS_ERROR,
+        payload: error.message,
+      });
+    }
+  };
 };
