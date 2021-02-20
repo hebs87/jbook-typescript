@@ -12,6 +12,8 @@ var cells_1 = require("./routes/cells");
 // method to use depending on environment
 var serve = function (port, filename, dir, useProxy) {
     var app = express_1.default();
+    // Call the createCellsRouter - try to get a response from that first before calling proxy
+    app.use(cells_1.createCellsRouter(filename, dir));
     if (useProxy) {
         // Create proxy to port that React app is running on
         app.use(http_proxy_middleware_1.createProxyMiddleware({
@@ -25,8 +27,6 @@ var serve = function (port, filename, dir, useProxy) {
         var packagePath = require.resolve('local-client/build/index.html');
         app.use(express_1.default.static(path_1.default.dirname(packagePath)));
     }
-    // Call the createCellsRouter
-    app.use(cells_1.createCellsRouter(filename, dir));
     // Resolve promise if successful, or reject and put into error state on error
     return new Promise(function (resolve, reject) {
         app.listen(port, resolve).on('error', reject);

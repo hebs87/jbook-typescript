@@ -8,6 +8,9 @@ import {createCellsRouter} from "./routes/cells";
 export const serve = (port: number, filename: string, dir: string, useProxy: boolean) => {
   const app = express();
 
+  // Call the createCellsRouter - try to get a response from that first before calling proxy
+  app.use(createCellsRouter(filename, dir));
+
   if (useProxy) {
     // Create proxy to port that React app is running on
     app.use(createProxyMiddleware({
@@ -20,9 +23,6 @@ export const serve = (port: number, filename: string, dir: string, useProxy: boo
     const packagePath = require.resolve('local-client/build/index.html');
     app.use(express.static(path.dirname(packagePath)));
   }
-
-  // Call the createCellsRouter
-  app.use(createCellsRouter(filename, dir));
 
   // Resolve promise if successful, or reject and put into error state on error
   return new Promise<void>((resolve, reject) => {
