@@ -24,6 +24,11 @@ const initialState: CellsState = {
 // Wrap reducer in immer produce method to enable simplifying state update
 const cellsReducer = produce((state: CellsState = initialState, action: Action) => {
   switch (action.type) {
+    case ActionType.SAVE_CELLS_ERROR:
+      // Set error state
+      state.error = action.payload;
+      return state;
+
     case ActionType.FETCH_CELLS:
       // Set loading and error states
       state.loading = true;
@@ -31,6 +36,7 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
       return state;
 
     case ActionType.FETCH_CELLS_COMPLETE:
+      state.loading = false;
       // Set the order state - map over the array of cell objects and return the cell id
       state.order = action.payload.map(cell => cell.id);
       // Parse payload data to create the state data object
@@ -42,7 +48,7 @@ const cellsReducer = produce((state: CellsState = initialState, action: Action) 
 
     case ActionType.FETCH_CELLS_ERROR:
       // Set loading and error states
-      state.loading = true;
+      state.loading = false;
       state.error = action.payload;
       return state;
 
