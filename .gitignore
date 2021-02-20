@@ -8,6 +8,7 @@ packages/cli/package-lock.json
 
 # local-api
 packages/local-api/node_modules
+packages/local-api/package-lock.json
 
 # local-client
 # dependencies
